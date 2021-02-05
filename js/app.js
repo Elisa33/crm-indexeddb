@@ -1,32 +1,37 @@
 (function () {
 	let DB;
+
 	document.addEventListener('DOMContentLoaded', () => {
 		crearDB();
 	});
-	//crea la base de datos de indexDB
+
+	// crea la base de datos
 	function crearDB() {
 		const crearDB = window.indexedDB.open('crm', 1);
 
 		crearDB.onerror = function () {
-			console.log('hubo un error');
+			console.log('Hubo un error');
 		};
 
 		crearDB.onsuccess = function () {
 			DB = crearDB.result;
 		};
+
 		crearDB.onupgradeneeded = function (e) {
 			const db = e.target.result;
+
 			const objectStore = db.createObjectStore('crm', {
 				keyPath: 'id',
-				autoIncremetn: true,
+				autoIncrement: true,
 			});
+
 			objectStore.createIndex('nombre', 'nombre', { unique: false });
 			objectStore.createIndex('email', 'email', { unique: true });
 			objectStore.createIndex('telefono', 'telefono', { unique: false });
 			objectStore.createIndex('empresa', 'empresa', { unique: false });
 			objectStore.createIndex('id', 'id', { unique: true });
 
-			console.log('DB lista y creada');
+			console.log('Db lista');
 		};
 	}
 })();
